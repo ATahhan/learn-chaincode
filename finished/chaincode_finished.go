@@ -19,7 +19,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"hash"
+	"strings"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -88,6 +88,7 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	}
 
 	value = args[1]
+	var vArray []string
 	vArray = strings.Split(value,",")
 	key = vArray[0]
 	err = stub.PutState(key, []byte(vArray[0])) //write the variable into the chaincode state
@@ -106,7 +107,9 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
-	key = strings.Split(args[0],",")
+	var kArray []string
+	kArray = strings.Split(args[0],",")
+	key = kArray[0]
 	valAsbytes, err := stub.GetState(key)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
