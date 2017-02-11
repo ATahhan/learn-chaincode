@@ -41,7 +41,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
-	err := stub.PutState("hello_world", []byte(args[0]))
+	err := stub.PutState(strings.Split(args[1],", ")[0], []byte(strings.Split(args[1],", ")[0]))
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 
 	value = args[1]
 	var vArray []string
-	vArray = strings.Split(value,",")
+	vArray = strings.Split(value,", ")
 	key = vArray[0]
 	err = stub.PutState(key, []byte(vArray[0])) //write the variable into the chaincode state
 	if err != nil {
@@ -108,7 +108,7 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	}
 
 	var kArray []string
-	kArray = strings.Split(args[0],",")
+	kArray = strings.Split(args[0],", ")
 	key = kArray[0]
 	valAsbytes, err := stub.GetState(key)
 	if err != nil {
