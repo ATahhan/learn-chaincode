@@ -41,7 +41,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
-	err := stub.PutState(strings.Split(args[1],", ")[0], []byte(strings.Split(args[1],", ")[0]))
+	err := stub.PutState("Ammar_Tahhan, 937", []byte(args[0]))
 	if err != nil {
 		return nil, err
 	}
