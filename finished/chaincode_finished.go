@@ -88,11 +88,7 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
     }
 
     value = args[0]
-	if strings.Contains(value, "Gov") {
-		name = "Gov"
-	} else {
-		name = "Ammar_T"
-	}
+	name = "Gov_Ammar_T"
     err = stub.PutState(name, []byte(value))  //write the variable into the chaincode state
     if err != nil {
         return nil, err
