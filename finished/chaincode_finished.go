@@ -38,15 +38,15 @@ func main() {
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 1")
-	}
+        return nil, errors.New("Incorrect number of arguments. Expecting 1")
+    	}
 
-	err := stub.PutState("Ammar_T", []byte(args[0]))
-	if err != nil {
-		return nil, err
-	}
+    	err := stub.PutState("hello_world", []byte(args[0]))
+    	if err != nil {
+        	return nil, err
+    	}
 
-	return nil, nil
+    	return nil, nil
 }
 
 // Invoke isur entry point to invoke a chaincode function
@@ -79,42 +79,40 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
 // write - invoke function to write key/value pair
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var key, value string
-	var err error
-	fmt.Println("running write()")
+		var name, value string
+    	var err error
+    	fmt.Println("running write()")
 
-	if len(args) != 2 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
-	}
+    	if len(args) != 2 {
+    	    return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the variable and value to set")
+    	}
 
-	value = args[1]
-	var vArray []string
-	vArray = strings.Split(value,", ")
-	key = vArray[0]
-	err = stub.PutState(key, []byte(vArray[0])) //write the variable into the chaincode state
-	if err != nil {
-		return nil, err
-	}
-	return nil, nil
+    	value = args[0]
+		name = strings.Split(value, ",")[0]
+    	err = stub.PutState(name, []byte(value))  //write the variable into the chaincode state
+    	if err != nil {
+    	    return nil, err
+    	}
+    	return nil, nil
 }
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var key, jsonResp string
-	var err error
+	
+    	var name, jsonResp string
+    	var err error
 
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
-	}
+    	if len(args) != 1 {
+    	    return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
+    	}
 
-	var kArray []string
-	kArray = strings.Split(args[0],", ")
-	key = kArray[0]
-	valAsbytes, err := stub.GetState(key)
-	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
-		return nil, errors.New(jsonResp)
-	}
+    	name = args[0]
+    	valAsbytes, err := stub.GetState(name)
+    	if err != nil {
+     	   jsonResp = "{\"Error\":\"Failed to get state for " + name + "\"}"
+    	    return nil, errors.New(jsonResp)
+    	}
 
-	return valAsbytes, nil
+    	return valAsbytes, nil
 }
+
